@@ -17,10 +17,20 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
+import LoginIcon from '@mui/icons-material/Login';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
 
+import { useContext } from "react";
+import { Login } from "../contexts/Login";
 
 import PagesRoute from '../routes/PagesRoutes';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Collapse } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -99,6 +109,7 @@ export default function MiniDrawer() {
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [openSubMenu, setOpenSubMenu] = React.useState(false);
     const navigate = useNavigate();
 
     const handleDrawerOpen = () => {
@@ -108,9 +119,18 @@ export default function MiniDrawer() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    const handleClickSubMenu = () => {
+        setOpenSubMenu(!openSubMenu);
+    };
+
+    const { login, setLogin } = useContext(Login);
+    const handleLogOut = () => {
+        setLogin(false)
+        navigate('login')
+    }
 
     return (
-   
+
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
@@ -156,7 +176,7 @@ export default function MiniDrawer() {
                                     justifyContent: 'center',
                                 }}>
 
-                                <HomeIcon/>
+                                <HomeIcon />
                             </ListItemIcon>
                             <ListItemText sx={{ opacity: open ? 1 : 0 }} >Home</ListItemText>
                         </ListItemButton>
@@ -169,7 +189,7 @@ export default function MiniDrawer() {
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
                             }}
-                            onClick={() => navigate('teste')}>
+                            onClick={() => navigate('agendamento')}>
                             <ListItemIcon
                                 sx={{
                                     minWidth: 0,
@@ -177,15 +197,11 @@ export default function MiniDrawer() {
                                     justifyContent: 'center',
                                 }}>
 
-                                Teste
+                                <CalendarMonthIcon />
                             </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} >Agendamento</ListItemText>
                         </ListItemButton>
                     </ListItem>
-
-                </List>
-                <Divider />
-                <List>
 
                     <ListItem disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
@@ -194,18 +210,51 @@ export default function MiniDrawer() {
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
                             }}
-                        >
+                            onClick={() => navigate('status')}>
                             <ListItemIcon
                                 sx={{
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
-                                }}
-                            >
-                                teste
+                                }}>
+
+                                <FeaturedPlayListIcon />
                             </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }}> Status</ListItemText>
                         </ListItemButton>
+                    </ListItem>
+
+                </List>
+
+                <Divider />
+
+                <List >
+
+                    <ListItem disablePadding sx={{ display: 'block' }} >
+                        <ListItemButton onClick={handleClickSubMenu}>
+                            <ListItemIcon>
+                                <AccountCircleIcon />
+
+                            </ListItemIcon>
+                            <ListItemText primary="Usuário" />
+                            {openSubMenu ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        <Collapse in={openSubMenu} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItemButton sx={{ pl: 4 }} onClick={handleLogOut}>
+                                    <ListItemIcon>
+                                        <LoginIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Logout" />
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                    <ListItemIcon>
+                                        <SettingsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Configurações" />
+                                </ListItemButton>
+                            </List>
+                        </Collapse>
                     </ListItem>
 
                 </List>
