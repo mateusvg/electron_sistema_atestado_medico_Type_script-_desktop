@@ -7,18 +7,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, Button, Grid, IconButton, Input, InputAdornment, TextField } from '@mui/material';
+import { Box, Button, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, MenuItem, Select } from '@mui/material';
+
+//Services
+import { updateStatusTableAdmin } from '../services/updateStatusTable'
 import { getAllRegistersAdmin } from '../services/getAllRegistersTable';
+
+//Icons
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import CircleIcon from '../components/CircleIcon'
+import CircleIconGreen from '../components/CircleIconGreen'
+import CircleIconRed from '../components/CircleIconRed'
+import CircleIconBlue from '../components/CircleIconBlue'
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
+import SendIcon from '@mui/icons-material/Send';
 
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import { SelectChangeEvent } from '@mui/material/Select';
 
 type resultProps = {
   idForm: string
@@ -77,6 +85,55 @@ export default function DenseTable() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  //Status Modal
+  const [status, setStatus] = React.useState('');
+  const handleChangeDropDownModalEdit = (e: SelectChangeEvent) => {
+    e.preventDefault()
+    if (e.target.value === 'Em processamento') {
+      console.log(`novo status ${status}`)
+      setStatus('1')
+    } else if (e.target.value === 'Aprovado') {
+      setStatus('2')
+    } else {
+      setStatus('3')
+    }
+
+  };
+
+   function CircleIcon(props: any){
+    if (props.status === 'Reprovado') {
+        return <CircleIconRed/>
+    } else if (props.status === 'Aprovado') {
+        return <CircleIconGreen/>
+    } else {
+      console.log(props)
+        return <CircleIconBlue/>
+    }
+}
+
+  // Post form update status
+  const [cpf, setCpf] = useState('')
+  const handleOpenModalEdit = (cpf: any, status: any)=>{
+    handleOpen()
+    console.log(`stadus modal ${status}`)
+    console.log(`cpf modal ${cpf}`)
+    setStatus(status)
+    setCpf(cpf)
+
+  }
+  const handleSubmitAlterStatus = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const updateStatus = async () => {
+      console.log(status, cpf)
+      const updateStatusAdminTable = await updateStatusTableAdmin({ status: status, cpf: cpf })
+    }
+    updateStatus()
+    handleClose()
+    setTimeout(() => {
+      getAllRegisters()
+      getAllRegisters()
+    }, 100)
+  };
 
   return (
     <Box>
@@ -135,8 +192,8 @@ export default function DenseTable() {
                   <TableCell>{post.nomeMedico}</TableCell>
                   <TableCell>{post.aptidao}</TableCell>
                   <TableCell>{post.Status}</TableCell>
-                  <TableCell><CircleIcon /></TableCell>
-                  <TableCell><Button onClick={handleOpen}><EditIcon /></Button></TableCell>
+                  <TableCell><CircleIcon status={post.Status} /></TableCell>
+                  <TableCell><Button onClick={() => handleOpenModalEdit(post.cpf, post.Status)}><EditIcon /></Button></TableCell>
                   <TableCell><Button><DeleteIcon /> </Button></TableCell>
                 </TableRow>
 
@@ -156,11 +213,29 @@ export default function DenseTable() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            Alterar Status
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <Box sx={{ minWidth: 120 }} component="form" onSubmit={handleSubmitAlterStatus}>
+            <FormControl fullWidth >
+              <InputLabel id="demo-simple-select-label">Status</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={status}
+                label="Status"
+                onChange={handleChangeDropDownModalEdit}
+              >
+                <MenuItem value={'Em processamento'}>Em processamento</MenuItem>
+                <MenuItem value={'Aprovado'}>Aprovado</MenuItem>
+                <MenuItem value={'Reprovado'}>Reprovado</MenuItem>
+              </Select>
+              <Box marginTop={4}>
+                <Button variant="contained" type='submit' endIcon={<SendIcon />}>
+                  Alterar
+                </Button>
+              </Box>
+            </FormControl>
+          </Box>
         </Box>
       </Modal>
 
