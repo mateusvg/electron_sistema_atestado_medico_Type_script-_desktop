@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { Login } from "../contexts/Login";
+import LogoX from '../assets/img/LogoX.png'
 
 function Copyright(props: any) {
     return (
@@ -64,11 +65,9 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
+                    <img src={LogoX} alt="Logo" width={"10%"} />
+                    <Typography component="h1" variant="h5" marginTop={4}>
+                        Login
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
@@ -76,7 +75,7 @@ export default function SignIn() {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="Usuário"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -86,14 +85,14 @@ export default function SignIn() {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            label="Lembrar-me"
                         />
                         <Button
                             type="submit"
@@ -102,17 +101,17 @@ export default function SignIn() {
                             sx={{ mt: 3, mb: 2 }}
                             onClick={() => {handleClick()}}
                         >
-                            Sign In
+                            Acessar
                         </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
-                                    Forgot password?
+                                    Esqueceu sua senha?
                                 </Link>
                             </Grid>
                             <Grid item>
                                 <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    {"Não possui uma conta? Cadastrar"}
                                 </Link>
                             </Grid>
                         </Grid>
