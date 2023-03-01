@@ -89,14 +89,16 @@ export default function DenseTable() {
   const [status, setStatus] = React.useState('');
   const handleChangeDropDownModalEdit = (e: SelectChangeEvent) => {
     e.preventDefault()
-    if (e.target.value === 'Em processamento') {
-      console.log(`novo status ${status}`)
-      setStatus('1')
-    } else if (e.target.value === 'Aprovado') {
-      setStatus('2')
-    } else {
-      setStatus('3')
-    }
+    setStatus(e.target.value)
+    console.log(e.target.value)
+    // if (e.target.value === 'Em processamento') {
+    //   console.log(`novo status ${status}`)
+    //   setStatus('1')
+    // } else if (e.target.value === 'Aprovado') {
+    //   setStatus('2')
+    // } else {
+    //   setStatus('3')
+    // }
 
   };
 
@@ -106,7 +108,6 @@ export default function DenseTable() {
     } else if (props.status === 'Aprovado') {
         return <CircleIconGreen/>
     } else {
-      console.log(props)
         return <CircleIconBlue/>
     }
 }
