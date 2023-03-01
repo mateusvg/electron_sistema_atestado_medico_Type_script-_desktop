@@ -7,13 +7,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, Button, Grid, Input, InputAdornment, TextField } from '@mui/material';
+import { Box, Button, Grid, IconButton, Input, InputAdornment, TextField } from '@mui/material';
 import { getAllRegistersAdmin } from '../services/getAllRegistersTable';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import CircleIcon from '../components/CircleIcon'
 import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 
 type resultProps = {
@@ -64,6 +65,11 @@ export default function DenseTable() {
     })
   }
 
+  const handleClearClick = () => {
+    setSearchInput("");
+    console.log(searchInput)
+  };
+
   return (
     <Box>
       <Grid container justifyContent="center" marginBottom={5}>
@@ -71,11 +77,20 @@ export default function DenseTable() {
           id="input-with-icon-adornment"
           placeholder="Procurar CPF"
           onChange={handleChange}
+          defaultValue={searchInput}
+          value={searchInput}
           startAdornment={
             <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>
           }
+          endAdornment={
+            <IconButton sx={{
+              visibility: searchInput ? "visible" : "hidden"
+            }}
+              onClick={handleClearClick}>
+              <ClearIcon />
+            </IconButton>}
         />
       </Grid>
 
