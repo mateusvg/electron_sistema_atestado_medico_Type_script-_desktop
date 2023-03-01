@@ -93,7 +93,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
+
+
 export default function MiniDrawer() {
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -107,6 +110,7 @@ export default function MiniDrawer() {
     };
 
     return (
+   
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
@@ -211,5 +215,6 @@ export default function MiniDrawer() {
                 <PagesRoute />
             </Box>
         </Box>
+
     );
 }

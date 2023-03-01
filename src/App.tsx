@@ -1,17 +1,22 @@
 import {
   BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  Outlet
 } from 'react-router-dom';
-import Home from './pages/Home'
+
 import SideNavBar from './components/SideNavBar'
+import LoginPage from '../src/pages/Login'
+
+import { useState } from 'react';
+import { Login } from "./contexts/Login";
 
 export default function App() {
+  const [login, setLogin] = useState(false);
   return (
     <BrowserRouter>
-      <SideNavBar />
+      <Login.Provider value={{ login, setLogin }}>
+
+        {login ? <SideNavBar /> : <LoginPage />}
+      </Login.Provider>
+
     </BrowserRouter>
   );
 }

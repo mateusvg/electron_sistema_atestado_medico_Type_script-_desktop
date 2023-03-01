@@ -58,7 +58,7 @@
     "appId": "Atestado Medico",
     "extends": null,
     "win": {
-      "icon": "./img/LogoX.png",
+      "icon": "./src/assets/img/LogoX.png",
       "target": "msi"
     }
   }
